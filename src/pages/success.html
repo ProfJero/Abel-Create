@@ -1,0 +1,43 @@
+<!--
+title: Thank you | Abel Create
+description: Your downloads are ready.
+script: success
+noindex: true
+-->
+<section class="wrap max-w-3xl pt-12 pb-24 sm:pt-20">
+  <div data-state="loading" class="text-center">
+    <div class="mx-auto size-14 animate-spin rounded-full border-4 border-line border-t-accent"></div>
+    <p class="mt-6 font-display text-2xl font-bold">Confirming your payment…</p>
+    <p class="mt-2 text-mute">This usually takes a few seconds. Please don’t close this page.</p>
+  </div>
+
+  <div data-state="paid" hidden>
+    <div class="text-center">
+      <div class="mx-auto grid size-16 place-items-center rounded-full bg-emerald-500 text-3xl text-white shadow-[0_12px_30px_-10px_rgb(16_185_129/0.7)]">✓</div>
+      <h1 class="h-display mt-6 text-[clamp(2.5rem,7vw,4.5rem)]">Thank you!</h1>
+      <p class="mx-auto mt-4 max-w-md text-lg text-ink/70">Your payment was successful. Your files are ready, and we’ve emailed the links to <strong data-email></strong>.</p>
+    </div>
+    <div class="mt-10 rounded-[1.5rem] border border-line bg-white p-5 sm:p-8">
+      <div class="flex items-baseline justify-between gap-4">
+        <h2 class="font-display text-xl font-bold">Your downloads</h2>
+        <p class="text-xs text-mute">Order <span data-ref class="font-mono"></span></p>
+      </div>
+      <ul data-downloads class="mt-5 grid gap-3"></ul>
+      <p class="mt-5 text-sm text-mute">Links expire in <span data-hours>48</span> hours. You can get fresh links any time from <a href="/account" class="font-medium text-ink underline">My account</a> using this email.</p>
+    </div>
+    <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+      <a href="/shop" class="btn-ghost">Keep shopping</a>
+      <a href="/contact" class="btn-dark">Need a custom design?</a>
+    </div>
+  </div>
+
+  <div data-state="error" hidden class="text-center">
+    <div class="mx-auto grid size-16 place-items-center rounded-full bg-accent-50 text-3xl text-accent">!</div>
+    <h1 class="mt-6 font-display text-4xl font-bold">We couldn’t confirm this payment</h1>
+    <p data-error-msg class="mx-auto mt-3 max-w-md text-mute"></p>
+    <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+      <button type="button" data-retry class="btn-dark">Check again</button>
+      <a href="https://wa.me/{{site.whatsapp}}" target="_blank" rel="noopener" class="btn-ghost">Get help on WhatsApp</a>
+    </div>
+  </div>
+</section>

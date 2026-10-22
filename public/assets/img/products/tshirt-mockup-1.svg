@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900"><defs><filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="24" stdDeviation="28" flood-opacity=".28"/></filter><filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .07 0"/></filter></defs><rect width="1200" height="900" fill="#E8E6E1"/><g transform="translate(384 108) scale(1)" filter="url(#sh)">
+      <path d="M-120 0 C-90 40 90 40 120 0 L300 80 L250 230 L190 205 L190 650 L-190 650 L-190 205 L-250 230 L-300 80 Z" fill="#1A1A1C"/>
+      <path d="M-120 0 C-90 40 90 40 120 0" fill="none" stroke="#000" stroke-opacity=".15" stroke-width="10"/></g><g transform="translate(816 108) scale(1)" filter="url(#sh)">
+      <path d="M-120 0 C-90 40 90 40 120 0 L300 80 L250 230 L190 205 L190 650 L-190 650 L-190 205 L-250 230 L-300 80 Z" fill="#FFFFFF"/>
+      <path d="M-120 0 C-90 40 90 40 120 0" fill="none" stroke="#000" stroke-opacity=".15" stroke-width="10"/></g>
+    <g transform="translate(816 378)"><circle cx="0" cy="-27" r="63.00000000000001" fill="#E5121B"/>
+  <circle cx="0" cy="-27" r="39.06" fill="none" stroke="#FFFFFF" stroke-width="10.080000000000002"/>
+  <circle cx="39.06" cy="-66.06" r="12.600000000000001" fill="#0B0B0C"/>
+    <text y="108" text-anchor="middle" font-family="'Arial Black','Helvetica Neue',Arial,sans-serif" font-size="45" fill="#0B0B0C">MERCH</text></g>
+    <g transform="translate(384 378)"><circle cx="0" cy="-27" r="63.00000000000001" fill="#E5121B"/>
+  <circle cx="0" cy="-27" r="39.06" fill="none" stroke="#1A1A1C" stroke-width="10.080000000000002"/>
+  <circle cx="39.06" cy="-66.06" r="12.600000000000001" fill="#FFFFFF"/>
+    <text y="108" text-anchor="middle" font-family="'Arial Black','Helvetica Neue',Arial,sans-serif" font-size="45" fill="#FFFFFF">MERCH</text></g><rect width="100%" height="100%" filter="url(#grain)"/></svg>

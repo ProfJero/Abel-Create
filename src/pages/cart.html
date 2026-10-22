@@ -1,0 +1,52 @@
+<!--
+title: Cart & Checkout | Abel Create
+description: Review your design files and pay securely with Mobile Money or card.
+script: cart
+noindex: true
+-->
+<section class="wrap pt-10 pb-24 sm:pt-14">
+  <h1 class="h-display reveal text-[clamp(2.5rem,7vw,5rem)]">Checkout</h1>
+  <ol class="reveal mt-6 flex items-center gap-3 text-sm font-medium" aria-label="Checkout steps">
+    <li class="flex items-center gap-2"><span class="grid size-6 place-items-center rounded-full bg-ink text-xs text-white">1</span>Cart</li>
+    <li aria-hidden="true" class="h-px w-8 bg-line"></li>
+    <li class="flex items-center gap-2 text-mute"><span class="grid size-6 place-items-center rounded-full border border-line text-xs">2</span>Pay</li>
+    <li aria-hidden="true" class="h-px w-8 bg-line"></li>
+    <li class="flex items-center gap-2 text-mute"><span class="grid size-6 place-items-center rounded-full border border-line text-xs">3</span>Download</li>
+  </ol>
+
+  <div data-checkout class="mt-10 grid gap-10 lg:grid-cols-12">
+    <div class="lg:col-span-7">
+      <div data-lines class="divide-y divide-line rounded-[1.5rem] border border-line bg-white px-5 sm:px-6"><div class="skeleton my-6 h-24"></div></div>
+    </div>
+
+    <aside class="lg:col-span-5">
+      <form data-pay class="rounded-[1.5rem] border border-line bg-white p-6 sm:p-8 lg:sticky lg:top-28" novalidate>
+        <h2 class="font-display text-2xl font-bold">Order summary</h2>
+        <dl class="mt-6 grid gap-3 text-sm">
+          <div class="flex justify-between"><dt class="text-mute">Items</dt><dd data-n>0</dd></div>
+          <div class="flex justify-between"><dt class="text-mute">Delivery</dt><dd>Instant download</dd></div>
+          <div class="flex items-baseline justify-between border-t border-line pt-4"><dt class="font-semibold">Total</dt><dd data-total class="font-display text-3xl font-bold">GH₵0</dd></div>
+        </dl>
+
+        <div class="field mt-8">
+          <label for="co-email" class="label">Email for your download links</label>
+          <input id="co-email" name="email" type="email" required autocomplete="email" placeholder="you@email.com" class="input">
+          <p class="text-xs text-mute">Use the same email to sign in to <a class="underline" href="/account">My account</a> and re-download later.</p>
+        </div>
+
+        <label class="mt-5 flex items-start gap-3 text-sm text-ink/80">
+          <input type="checkbox" name="agree" required class="mt-0.5 size-4 accent-ink">
+          <span>I agree to the <a href="/legal/terms" class="underline">Terms</a>, <a href="/legal/license" class="underline">Licence</a> and <a href="/legal/refunds" class="underline">Refund policy</a>.</span>
+        </label>
+
+        <p data-error class="mt-4 hidden rounded-xl bg-accent-50 px-4 py-3 text-sm text-accent-600" role="alert"></p>
+
+        <button data-submit class="btn-primary mt-6 w-full py-4 text-[15px]">Pay securely</button>
+        <div class="mt-4 flex items-center justify-center gap-2 text-xs text-mute">
+          <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+          Secured by Paystack · MTN MoMo, Telecel Cash, AT Money, Visa, Mastercard
+        </div>
+      </form>
+    </aside>
+  </div>
+</section>

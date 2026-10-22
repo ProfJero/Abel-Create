@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900"><defs><filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="24" stdDeviation="28" flood-opacity=".28"/></filter><filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .07 0"/></filter></defs><rect width="1200" height="900" fill="#2B2B2E"/>
+    <rect x="96" y="90" width="480" height="720" rx="8" fill="#1F1F22" stroke="#3a3a3e"/>
+    <text x="120" y="144" font-family="'Helvetica Neue',Arial,sans-serif" font-size="25.2" font-weight="700" fill="#E6E6E6">Layers</text>
+    <g transform="translate(96 180)"><rect width="480" height="76.5" fill="#3A5BD9" opacity=".7"/>
+      <rect x="24" y="13.5" width="49.5" height="49.5" fill="#0B0B0C" stroke="#555"/>
+      <text x="96" y="46.8" font-family="'Helvetica Neue',Arial,sans-serif" font-size="23.4" fill="#E6E6E6">Headline</text></g><g transform="translate(96 265.50000000000006)"><rect width="480" height="76.5" fill="transparent" opacity=".7"/>
+      <rect x="24" y="13.5" width="49.5" height="49.5" fill="#0B0B0C" stroke="#555"/>
+      <text x="96" y="46.8" font-family="'Helvetica Neue',Arial,sans-serif" font-size="23.4" fill="#E6E6E6">Sub headline</text></g><g transform="translate(96 351)"><rect width="480" height="76.5" fill="transparent" opacity=".7"/>
+      <rect x="24" y="13.5" width="49.5" height="49.5" fill="#0B0B0C" stroke="#555"/>
+      <text x="96" y="46.8" font-family="'Helvetica Neue',Arial,sans-serif" font-size="23.4" fill="#E6E6E6">Date &amp; venue</text></g><g transform="translate(96 436.50000000000006)"><rect width="480" height="76.5" fill="transparent" opacity=".7"/>
+      <rect x="24" y="13.5" width="49.5" height="49.5" fill="#888" stroke="#555"/>
+      <text x="96" y="46.8" font-family="'Helvetica Neue',Arial,sans-serif" font-size="23.4" fill="#E6E6E6">Photo (smart object)</text></g><g transform="translate(96 522.0000000000001)"><rect width="480" height="76.5" fill="transparent" opacity=".7"/>
+      <rect x="24" y="13.5" width="49.5" height="49.5" fill="#E5121B" stroke="#555"/>
+      <text x="96" y="46.8" font-family="'Helvetica Neue',Arial,sans-serif" font-size="23.4" fill="#E6E6E6">Shape accent</text></g><g transform="translate(96 607.5)"><rect width="480" height="76.5" fill="transparent" opacity=".7"/>
+      <rect x="24" y="13.5" width="49.5" height="49.5" fill="#E5121B" stroke="#555"/>
+      <text x="96" y="46.8" font-family="'Helvetica Neue',Arial,sans-serif" font-size="23.4" fill="#E6E6E6">Colour overlay</text></g><g transform="translate(96 693)"><rect width="480" height="76.5" fill="transparent" opacity=".7"/>
+      <rect x="24" y="13.5" width="49.5" height="49.5" fill="#F4F4F6" stroke="#555"/>
+      <text x="96" y="46.8" font-family="'Helvetica Neue',Arial,sans-serif" font-size="23.4" fill="#E6E6E6">Background</text></g>
+    <g transform="translate(672.0000000000001 90)"><rect width="558" height="720" fill="#F4F4F6"/><circle cx="401.76" cy="216" r="200.88" fill="#E5121B"/><circle cx="401.76" cy="216" r="111.60000000000001" fill="none" stroke="#0B0B0C" stroke-width="6.696"/>
+  <text x="39.06" y="532.8" font-family="'Arial Black','Helvetica Neue',Arial,sans-serif" font-size="187.20000000000002" fill="#0B0B0C" letter-spacing="-2">GROW</text>
+  <text x="41.85" y="590.4" font-family="'Helvetica Neue',Arial,sans-serif" font-weight="700" font-size="25.11" fill="#0B0B0C" letter-spacing="4">YOUR BRAND</text>
+  <path d="M41.85 633.6h474.3" stroke="#0B0B0C" stroke-opacity=".35" stroke-width="2"/>
+  <text x="41.85" y="669.6" font-family="'Helvetica Neue',Arial,sans-serif" font-size="14.508" fill="#0B0B0C" fill-opacity=".8">SAT 14 NOV · 6PM · CAPE COAST</text>
+  <text x="516.15" y="669.6" text-anchor="end" font-family="'Helvetica Neue',Arial,sans-serif" font-weight="700" font-size="14.508" fill="#0B0B0C">FREE ENTRY</text></g>
+    <text x="672.0000000000001" y="864" font-family="'Helvetica Neue',Arial,sans-serif" font-size="21.6" fill="#999">Instagram Carousel Kit.psd · fully layered</text><rect width="100%" height="100%" filter="url(#grain)"/></svg>

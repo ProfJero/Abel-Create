@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000"><defs><filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="24" stdDeviation="28" flood-opacity=".28"/></filter><filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .07 0"/></filter></defs><rect width="1600" height="1000" fill="#FAF8F3"/><g stroke="#2a2a2a" fill="none" stroke-width="2.2" stroke-linecap="round" opacity=".85">
+        <circle cx="196" cy="280" r="120"/><circle cx="192" cy="283" r="60"/>
+        <path d="M108 304 q84 -72 168 0"/></g>
+        <text x="72" y="466" font-family="'Helvetica Neue',Arial,sans-serif" font-size="30" fill="#555" font-style="italic">option 1</text><g stroke="#2a2a2a" fill="none" stroke-width="2.2" stroke-linecap="round" opacity=".85">
+        <circle cx="676" cy="280" r="120"/><circle cx="672" cy="283" r="74.4"/>
+        <path d="M588 304 q84 -84 168 0"/></g>
+        <text x="552" y="466" font-family="'Helvetica Neue',Arial,sans-serif" font-size="30" fill="#555" font-style="italic">option 2</text><g stroke="#2a2a2a" fill="none" stroke-width="2.2" stroke-linecap="round" opacity=".85">
+        <circle cx="1156" cy="280" r="120"/><circle cx="1152" cy="283" r="88.8"/>
+        <path d="M1068 304 q84 -96 168 0"/></g>
+        <text x="1032" y="466" font-family="'Helvetica Neue',Arial,sans-serif" font-size="30" fill="#555" font-style="italic">option 3</text><g stroke="#2a2a2a" fill="none" stroke-width="2.2" stroke-linecap="round" opacity=".85">
+        <circle cx="196" cy="700" r="120"/><circle cx="192" cy="703" r="60"/>
+        <path d="M108 724 q84 -108 168 0"/></g>
+        <text x="72" y="886" font-family="'Helvetica Neue',Arial,sans-serif" font-size="30" fill="#555" font-style="italic">option 4</text><g stroke="#2a2a2a" fill="none" stroke-width="2.2" stroke-linecap="round" opacity=".85">
+        <circle cx="676" cy="700" r="120"/><circle cx="672" cy="703" r="74.4"/>
+        <path d="M588 724 q84 -120 168 0"/></g>
+        <text x="552" y="886" font-family="'Helvetica Neue',Arial,sans-serif" font-size="30" fill="#555" font-style="italic">option 5 ✓</text><g stroke="#2a2a2a" fill="none" stroke-width="2.2" stroke-linecap="round" opacity=".85">
+        <circle cx="1156" cy="700" r="120"/><circle cx="1152" cy="703" r="88.8"/>
+        <path d="M1068 724 q84 -132 168 0"/></g>
+        <text x="1032" y="886" font-family="'Helvetica Neue',Arial,sans-serif" font-size="30" fill="#555" font-style="italic">option 6</text><circle cx="672" cy="700" r="170" fill="none" stroke="#E5121B" stroke-width="4"/><rect width="100%" height="100%" filter="url(#grain)"/></svg>

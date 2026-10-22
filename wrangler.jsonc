@@ -1,0 +1,28 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "abel-create",
+  "main": "src/worker/index.js",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  // Static site from /public. /api/* requests run the Worker first.
+  "assets": {
+    "directory": "public",
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
+  },
+  // Private bucket holding the paid PSD/AI/ZIP files
+  "r2_buckets": [{ "binding": "FILES", "bucket_name": "abel-create-files" }],
+  "vars": {
+    "SITE_URL": "https://abelcreate.com",
+    "FIREBASE_PROJECT_ID": "safetrace-247bd",
+    "DOWNLOAD_HOURS": "48",
+    "MAIL_FROM": "Abel Create <downloads@abelcreate.com>"
+  }
+  // Secrets (set with `npx wrangler secret put NAME`, and in .dev.vars locally):
+  //   PAYSTACK_SECRET_KEY        sk_test_… / sk_live_…
+  //   FIREBASE_SERVICE_ACCOUNT   the service-account JSON, on one line
+  //   DOWNLOAD_SIGNING_KEY       any long random string
+  //   RESEND_API_KEY             optional, to email download links
+}

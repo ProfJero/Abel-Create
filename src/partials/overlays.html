@@ -1,0 +1,55 @@
+<!-- Mobile menu -->
+<div id="mobile-menu" data-menu hidden class="fixed inset-0 z-[60] lg:hidden">
+  <div data-anim data-menu-close class="absolute inset-0 bg-ink/40 opacity-0 backdrop-blur-sm transition-opacity duration-300 data-[open]:opacity-100"></div>
+  <div data-anim data-menu-panel role="dialog" aria-modal="true" aria-label="Menu" class="absolute inset-x-2 top-2 origin-top -translate-y-3 scale-[0.98] rounded-3xl bg-paper p-4 opacity-0 shadow-2xl transition duration-300 ease-out-expo data-[open]:translate-y-0 data-[open]:scale-100 data-[open]:opacity-100">
+    <div class="flex items-center justify-between">
+      <img src="/assets/img/brand/wordmark-black.png" alt="Abel Create" class="ml-2 h-7 w-auto">
+      <button type="button" data-menu-close class="grid size-11 place-items-center rounded-full bg-white" aria-label="Close menu">
+        <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <nav aria-label="Mobile" class="mt-6 grid">
+      <a href="/" class="flex items-center justify-between border-b border-line px-2 py-4 font-display text-3xl font-bold">Home<span class="text-accent">→</span></a>
+      <a href="/work" class="flex items-center justify-between border-b border-line px-2 py-4 font-display text-3xl font-bold">Work<span class="text-accent">→</span></a>
+      <a href="/shop" class="flex items-center justify-between border-b border-line px-2 py-4 font-display text-3xl font-bold">Shop<span class="text-accent">→</span></a>
+      <a href="/services" class="flex items-center justify-between border-b border-line px-2 py-4 font-display text-3xl font-bold">Services<span class="text-accent">→</span></a>
+      <a href="/about" class="flex items-center justify-between border-b border-line px-2 py-4 font-display text-3xl font-bold">About<span class="text-accent">→</span></a>
+      <a href="/contact" class="flex items-center justify-between px-2 py-4 font-display text-3xl font-bold">Contact<span class="text-accent">→</span></a>
+    </nav>
+    <div class="mt-4 grid grid-cols-2 gap-2">
+      <a href="/account" class="btn-ghost">My account</a>
+      <a href="https://wa.me/{{site.whatsapp}}" target="_blank" rel="noopener" class="btn-dark">WhatsApp</a>
+    </div>
+  </div>
+</div>
+
+<!-- Cart drawer -->
+<div data-cart hidden class="fixed inset-0 z-[70]">
+  <div data-anim data-cart-close class="absolute inset-0 bg-ink/40 opacity-0 backdrop-blur-sm transition-opacity duration-300 data-[open]:opacity-100"></div>
+  <aside data-anim data-cart-panel role="dialog" aria-modal="true" aria-labelledby="cart-title" class="absolute inset-y-0 right-0 flex w-full max-w-md translate-x-full flex-col bg-paper shadow-2xl transition-transform duration-500 ease-out-expo data-[open]:translate-x-0">
+    <div class="flex items-center justify-between border-b border-line px-5 py-4">
+      <h2 id="cart-title" class="font-display text-xl font-bold">Your cart <span data-cart-count-text class="text-mute"></span></h2>
+      <button type="button" data-cart-close class="grid size-11 place-items-center rounded-full hover:bg-white" aria-label="Close cart">
+        <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div data-cart-items class="flex-1 overflow-y-auto px-5 py-4"></div>
+    <div data-cart-footer class="border-t border-line bg-white px-5 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+      <div class="flex items-baseline justify-between">
+        <span class="text-sm text-mute">Subtotal</span>
+        <span data-cart-total class="font-display text-2xl font-bold">GH₵0</span>
+      </div>
+      <p class="mt-1 text-xs text-mute">Instant download after payment · Mobile Money &amp; cards</p>
+      <a href="/cart" class="btn-primary mt-4 w-full">Checkout <span class="arrow">→</span></a>
+      <button type="button" data-cart-close class="mt-2 w-full py-2 text-sm font-medium text-mute hover:text-ink">Continue shopping</button>
+    </div>
+  </aside>
+</div>
+
+<!-- Toasts -->
+<div data-toasts aria-live="polite" class="pointer-events-none fixed inset-x-0 bottom-4 z-[80] flex flex-col items-center gap-2 px-4"></div>
+
+<!-- Floating WhatsApp -->
+<a href="https://wa.me/{{site.whatsapp}}" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" class="fixed right-4 bottom-4 z-40 grid size-14 place-items-center rounded-full bg-[#25D366] text-white shadow-[0_10px_30px_-8px_rgb(37_211_102/0.7)] transition hover:scale-105 sm:right-6 sm:bottom-6">
+  <svg class="size-7" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.4-.5c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3ZM12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.6 0-3.2-.4-4.5-1.3l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Z"/></svg>
+</a>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900"><defs><filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="24" stdDeviation="28" flood-opacity=".28"/></filter><filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .07 0"/></filter></defs><rect width="1200" height="900" fill="#D9D4CA"/>
+    <g transform="translate(144 90) rotate(-4)" filter="url(#sh)"><rect width="504.00000000000006" height="702" fill="#FFFFFF"/>
+      <circle cx="72" cy="72" r="31.500000000000004" fill="#E5121B"/>
+  <circle cx="72" cy="72" r="19.53" fill="none" stroke="#FFFFFF" stroke-width="5.040000000000001"/>
+  <circle cx="91.53" cy="52.47" r="6.300000000000001" fill="#0B0B0C"/>
+      <rect x="45" y="198" width="270" height="10.8" fill="#D0CEC9"/><rect x="45" y="243.00000000000003" width="378" height="10.8" fill="#D0CEC9"/><rect x="45" y="288" width="378" height="10.8" fill="#D0CEC9"/><rect x="45" y="333" width="270" height="10.8" fill="#D0CEC9"/><rect x="45" y="378.00000000000006" width="378" height="10.8" fill="#D0CEC9"/><rect x="45" y="423" width="378" height="10.8" fill="#D0CEC9"/><rect x="45" y="468" width="270" height="10.8" fill="#D0CEC9"/></g>
+    <g transform="translate(660 162) rotate(6)" filter="url(#sh)"><rect width="450" height="261" rx="6" fill="#0B0B0C"/>
+      <circle cx="90" cy="130.5" r="45" fill="#E5121B"/>
+  <circle cx="90" cy="130.5" r="27.9" fill="none" stroke="#0B0B0C" stroke-width="7.2"/>
+  <circle cx="117.9" cy="102.6" r="9" fill="#FFFFFF"/>
+      <text x="171" y="144" font-family="'Arial Black','Helvetica Neue',Arial,sans-serif" font-size="36" fill="#FFFFFF">BRAND</text></g>
+    <g transform="translate(600 504.00000000000006) rotate(-3)" filter="url(#sh)"><rect width="450" height="261" rx="6" fill="#FFFFFF"/>
+      <text x="36" y="108" font-family="'Arial Black','Helvetica Neue',Arial,sans-serif" font-size="28.8" fill="#0B0B0C">Your Name</text>
+      <text x="36" y="153" font-family="'Helvetica Neue',Arial,sans-serif" font-size="18" fill="#555">Creative Director</text>
+      <rect x="36" y="198" width="72" height="10.8" fill="#E5121B"/></g><rect width="100%" height="100%" filter="url(#grain)"/></svg>

@@ -1,0 +1,41 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isEmail(v) {
+      return v is string && v.size() <= 200 && v.matches('^[^@ ]+@[^@ ]+[.][^@ ]+$');
+    }
+    function str(v, min, max) {
+      return v is string && v.size() >= min && v.size() <= max;
+    }
+
+    // Public catalogue: anyone can read published items. Edit in the
+    // Firebase console or with `npm run seed`.
+    match /{col}/{id} {
+      allow read: if col in ['products', 'projects', 'testimonials', 'reviews']
+                  && resource.data.published == true;
+    }
+
+    // Contact form: create only, nobody can read through the client.
+    match /messages/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['name', 'email', 'service', 'budget', 'message', 'createdAt'])
+        && str(request.resource.data.name, 1, 120)
+        && isEmail(request.resource.data.email)
+        && str(request.resource.data['service'], 1, 80)
+        && str(request.resource.data.budget, 0, 80)
+        && str(request.resource.data.message, 10, 5000)
+        && request.resource.data.createdAt == request.time;
+    }
+
+    // Newsletter: create only.
+    match /subscribers/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['email', 'source', 'createdAt'])
+        && isEmail(request.resource.data.email)
+        && str(request.resource.data.source, 0, 100)
+        && request.resource.data.createdAt == request.time;
+    }
+
+    // orders and productFiles are only touched by the Cloudflare Worker
+    // (service account bypasses rules). Everything else is denied.
+  }
+}

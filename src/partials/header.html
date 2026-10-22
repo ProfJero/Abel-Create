@@ -1,0 +1,29 @@
+<header id="site-header" class="group/h sticky top-0 z-50 transition-[background-color,box-shadow,backdrop-filter] duration-500 data-[scrolled]:bg-paper/80 data-[scrolled]:shadow-[0_1px_0_var(--color-line)] data-[scrolled]:backdrop-blur-xl">
+  <div class="wrap flex h-16 items-center justify-between gap-4 sm:h-20">
+    <a href="/" class="flex shrink-0 items-center" aria-label="Abel Create, home">
+      <img src="/assets/img/brand/wordmark-black.png" alt="Abel Create" width="393" height="129" class="h-8 w-auto sm:h-9">
+    </a>
+
+    <nav aria-label="Main" class="hidden items-center gap-1 rounded-full border border-line bg-white/70 p-1 backdrop-blur lg:flex">
+      <a href="/work" class="nav-link" data-nav="work">Work</a>
+      <a href="/shop" class="nav-link" data-nav="shop">Shop</a>
+      <a href="/services" class="nav-link" data-nav="services">Services</a>
+      <a href="/about" class="nav-link" data-nav="about">About</a>
+      <a href="/contact" class="nav-link" data-nav="contact">Contact</a>
+    </nav>
+
+    <div class="flex items-center gap-1.5 sm:gap-2">
+      <a href="/account" class="hidden size-11 place-items-center rounded-full text-ink/70 transition hover:bg-white hover:text-ink sm:grid" aria-label="My account">
+        <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+      </a>
+      <button type="button" data-cart-open class="relative grid size-11 place-items-center rounded-full text-ink/80 transition hover:bg-white hover:text-ink" aria-label="Open cart">
+        <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7h14l-1.2 11.1a2 2 0 0 1-2 1.9H8.2a2 2 0 0 1-2-1.9L5 7Z"/><path d="M9 10V6a3 3 0 0 1 6 0v4"/></svg>
+        <span data-cart-count hidden class="absolute top-1 right-0.5 grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1 text-[11px] font-bold text-white ring-2 ring-paper">0</span>
+      </button>
+      <a href="/contact" class="btn-dark btn-sm ml-1 hidden md:inline-flex">Let’s talk</a>
+      <button type="button" data-menu-open class="grid size-11 place-items-center rounded-full text-ink transition hover:bg-white lg:hidden" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h10"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
