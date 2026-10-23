@@ -38,7 +38,7 @@ export const SHOP = {
 
 // The API Worker (worker/). Paste its URL here after `npm run deploy:api`.
 // Local development (npm run dev) automatically uses the local Worker.
-const API_URL = 'https://abel-create-api.YOUR-SUBDOMAIN.workers.dev';
+const API_URL = 'abel-create.diamondj04102026.workers.dev';
 const isLocal = typeof location !== 'undefined' && /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
 export const API_BASE = isLocal ? `http://${location.hostname}:8787` : API_URL;
 
