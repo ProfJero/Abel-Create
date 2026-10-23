@@ -63,7 +63,8 @@ async function build() {
       schema: meta.schema === 'person' ? partials['schema-person'] : '',
       script: meta.script ? `<script type="module" src="/assets/js/pages/${meta.script}.js"></script>` : ''
     };
-    const html = layout
+    // `layout: none` pages (the admin dashboard) are complete documents
+    const html = (meta.layout === 'none' ? body : layout)
       .replace(/{{\s*(\w+)\s*}}/g, (_, k) => vars[k] ?? '')
       .replace(/{{\s*site\.(\w+)\s*}}/g, (_, k) => flat[k] ?? '');
     const dest = join(out, rel);

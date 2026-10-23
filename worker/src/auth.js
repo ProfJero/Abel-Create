@@ -13,11 +13,16 @@ async function keys() {
   return jwks.keys;
 }
 
-export async function verifyIdToken(token, projectId) {
+// `emulator` (local testing only): the Auth emulator issues unsigned tokens.
+export async function verifyIdToken(token, projectId, { emulator = false } = {}) {
   const [h, p, s] = String(token).split('.');
-  if (!s) throw new Error('Malformed token');
   const header = decode(h);
   const claims = decode(p);
+  if (emulator) {
+    if (claims.aud !== projectId || !claims.sub) throw new Error('Wrong project');
+    return claims;
+  }
+  if (!s) throw new Error('Malformed token');
   const jwk = (await keys()).find((k) => k.kid === header.kid);
   if (header.alg !== 'RS256' || !jwk) throw new Error('Unknown signing key');
   const key = await crypto.subtle.importKey('jwk', jwk, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['verify']);

@@ -1,0 +1,14 @@
+# Cloudflare Pages response headers. CSS/JS keep Pages' default
+# (revalidate every request) because file names are not fingerprinted.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  X-Frame-Options: DENY
+
+/admin*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+
+/assets/img/*
+  Cache-Control: public, max-age=86400

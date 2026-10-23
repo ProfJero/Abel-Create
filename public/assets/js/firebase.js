@@ -2,6 +2,11 @@
 import { FIREBASE } from './config.js';
 
 const V = '13.1.0';
+// Local testing against the Firebase emulators: on localhost, run
+// localStorage.setItem('ac:emulators', '1') in the console and reload.
+const EMULATORS = (() => {
+  try { return /^(localhost|127\.0\.0\.1)$/.test(location.hostname) && localStorage.getItem('ac:emulators') === '1'; } catch { return false; }
+})();
 const CDN = `https://www.gstatic.com/firebasejs/${V}`;
 
 let appPromise;
@@ -19,13 +24,21 @@ function app() {
 
 let fsPromise;
 export function firestore() {
-  fsPromise ??= Promise.all([app(), import(`${CDN}/firebase-firestore.js`)]).then(([a, fs]) => ({ db: fs.getFirestore(a), fs }));
+  fsPromise ??= Promise.all([app(), import(`${CDN}/firebase-firestore.js`)]).then(([a, fs]) => {
+    const db = fs.getFirestore(a);
+    if (EMULATORS) fs.connectFirestoreEmulator(db, '127.0.0.1', 8080);
+    return { db, fs };
+  });
   return fsPromise;
 }
 
 let authPromise;
 export function auth() {
-  authPromise ??= Promise.all([app(), import(`${CDN}/firebase-auth.js`)]).then(([a, m]) => ({ auth: m.getAuth(a), m }));
+  authPromise ??= Promise.all([app(), import(`${CDN}/firebase-auth.js`)]).then(([a, m]) => {
+    const auth = m.getAuth(a);
+    if (EMULATORS) m.connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });
+    return { auth, m };
+  });
   return authPromise;
 }
 

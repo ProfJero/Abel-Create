@@ -33,10 +33,11 @@ if (!p) {
     <img src="${esc(p.cover)}" alt="${esc(alt('cover'))}" width="1200" height="900" class="reveal aspect-[4/3] w-full rounded-[1.75rem] object-cover sm:aspect-[16/9]">
   </div>
 
+  ${p.brief ? `
   <section class="wrap section grid gap-8 lg:grid-cols-12">
     <h2 class="reveal font-display text-3xl font-bold lg:col-span-4">The brief</h2>
     <p class="reveal text-xl leading-relaxed text-ink/80 sm:text-2xl lg:col-span-8">${esc(p.brief || '')}</p>
-  </section>
+  </section>` : ''}
 
   ${steps.length ? `
   <section class="border-y border-line bg-white">
@@ -60,12 +61,12 @@ if (!p) {
     </div>
   </section>` : ''}
 
-  <section class="wrap section">
+  ${p.images.length ? `<section class="wrap section">
     <h2 class="reveal font-display text-3xl font-bold">Final designs</h2>
     <div class="mt-10 grid gap-6">
       ${p.images.map((src, n) => `<img src="${esc(src)}" alt="${esc(alt(`final design ${n + 1}`))}" loading="lazy" class="reveal w-full rounded-[1.75rem] bg-line">`).join('')}
     </div>
-  </section>
+  </section>` : '<div class="h-20"></div>'}
 
   ${p.result || p.testimonial ? `
   <section class="wrap">

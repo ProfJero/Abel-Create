@@ -1,90 +1,164 @@
-# Abel Create: portfolio + shop
+# Abel Create: portfolio + shop + admin dashboard
 
 Portfolio and digital-download shop for Abel Create (graphic designer, Ghana).
 
-- **Frontend:** static HTML pages + Tailwind CSS v4 + vanilla JS modules (no framework)
-- **Data:** Firestore (projects, products, testimonials, contact messages, subscribers, orders)
-- **Server code:** one Cloudflare Worker (`src/worker`) for checkout, Paystack, downloads
-- **Payments:** Paystack (MTN MoMo, Telecel Cash, AT Money, Visa, Mastercard) in GHS
-- **Files:** private Cloudflare R2 bucket, served only through signed links that expire
-- **Hosting:** the same Worker serves the static site (Workers Static Assets)
+| Part | Tech | Hosted on |
+|---|---|---|
+| Website (`public/`) | HTML + Tailwind CSS v4 + vanilla JS | **Cloudflare Pages** → `abel-create.pages.dev` |
+| API (`worker/`) | Cloudflare Worker | **Cloudflare Workers** → `abel-create-api.<you>.workers.dev` |
+| Admin dashboard | `/admin` on the website | Cloudflare Pages (same site) |
+| Content, orders, messages | Firestore | Firebase project `safetrace-247bd` |
+| Logins | Firebase Authentication | |
+| Payments | Paystack (MoMo + cards, GHS) | |
+| Product files | R2 bucket `abel-create-files` (private) | |
+| Uploaded images | R2 bucket `abel-create-media` (served at `/media/*` by the Worker) | |
 
 ```
-public/                 built site (deployed as-is)
-  assets/js/config.js   ← site details, contact info, socials, Firebase config
-  assets/js/data/seed.js← sample projects/products (fallback + seed source)
-  assets/img/           photos, logos, generated placeholder art
-src/pages/              page sources (built into public/ with header/footer)
-src/partials/           header, footer, overlays (menu, cart drawer)
-src/styles/app.css      Tailwind theme and components
-src/worker/             Cloudflare Worker API
-scripts/                build, placeholder art, Firestore seeding
-firestore.rules         security rules
+public/                       built website (deployed to Pages as-is)
+  _headers                    security headers for Pages
+  admin/index.html            the dashboard (built from src/pages/admin)
+  assets/js/config.js         ← site details + API_URL + Firebase config
+  assets/js/admin/            dashboard code
+  assets/js/data/seed.js      sample content (fallback + seed source)
+src/pages, src/partials       page sources → built into public/
+worker/                       the API Worker (deployed separately)
+  wrangler.jsonc              ← SITE_URL, ALLOWED_ORIGINS, buckets
+  src/                        index (routes), shop, admin, http, firestore, auth
+  r2-cors.json                CORS rules for large uploads straight to R2
+scripts/                      build, seed, make-admin, placeholder art
+firestore.rules               security rules
 ```
 
-## Develop
+---
+
+## 1. Deploy the API Worker
+
+```bash
+npx wrangler login
+npx wrangler r2 bucket create abel-create-files
+npx wrangler r2 bucket create abel-create-media
+npx wrangler secret put PAYSTACK_SECRET_KEY        -c worker/wrangler.jsonc
+npx wrangler secret put FIREBASE_SERVICE_ACCOUNT   -c worker/wrangler.jsonc   # service-account JSON on one line
+npx wrangler secret put DOWNLOAD_SIGNING_KEY       -c worker/wrangler.jsonc   # any long random string
+npm run deploy:api
+```
+
+Wrangler prints the Worker URL, e.g. `https://abel-create-api.yourname.workers.dev`.
+
+## 2. Deploy the website to Cloudflare Pages
+
+1. Paste the Worker URL into `public/assets/js/config.js`:
+   ```js
+   const API_URL = 'https://abel-create-api.yourname.workers.dev';
+   ```
+2. Deploy, either:
+   - **From your computer:** `npm run deploy:site` (creates the Pages project `abel-create` on first run), or
+   - **From GitHub (auto-deploy on push):** Cloudflare dashboard → Workers & Pages → Create → Pages →
+     connect `ProfJero/Abel-Create`. Build command `npm run build`, output directory `public`,
+     environment variable `NODE_VERSION = 22`.
+
+Your site is live at `https://abel-create.pages.dev` (the name depends on the project name you choose).
+
+## 3. Connect the two
+
+In `worker/wrangler.jsonc`, make sure these match your Pages address, then `npm run deploy:api` again:
+
+```jsonc
+"SITE_URL": "https://abel-create.pages.dev",
+"ALLOWED_ORIGINS": "https://abel-create.pages.dev,https://*.abel-create.pages.dev"
+```
+
+- `ALLOWED_ORIGINS` is CORS: only these sites may call the API. The `*.` pattern allows Pages
+  preview deployments (`abc123.abel-create.pages.dev`). Add your custom domain here when you get one.
+- `SITE_URL` is where Paystack sends customers back after paying and what emails link to.
+- Firebase → Authentication → Settings → **Authorized domains**: add `abel-create.pages.dev`
+  (and your custom domain later), otherwise sign-in on `/admin` and `/account` fails.
+
+Check: open `https://abel-create.pages.dev/admin`, sign in. The Overview's setup panel shows
+"API Worker connected ✓".
+
+## 4. Firebase
+
+```bash
+firebase deploy --only firestore:rules
+```
+
+Firebase console → Authentication → Sign-in method → enable **Email/Password** (with **Email link**
+for customers) and **Google**.
+
+## 5. Create your admin account
+
+1. Firebase console → Project settings → Service accounts → **Generate new private key**.
+   Save it in this folder as `service-account.json` (it's git-ignored; treat it like a password).
+2. Run:
+   ```bash
+   npm run make-admin -- service-account.json you@email.com
+   ```
+   If the email has no login yet, you're asked to choose a password (10+ characters) and the
+   account is created. Then it's marked as an admin.
+3. Sign in at `https://abel-create.pages.dev/admin`.
+
+Remove an admin: `npm run make-admin -- service-account.json them@email.com --remove`.
+
+Without the terminal: create the user in Firebase → Authentication → Users → Add user, copy their
+**User UID**, then in Firestore create a collection `admins` with a document whose ID is that UID
+(add a field `email`). Signing in to `/admin` with a non-admin account shows the UID to copy.
+
+Admins are stored in `admins/{uid}`. Nobody can add themselves: the rules block all client writes to
+that collection, and the Worker checks the same list before any admin action.
+
+## 6. Content
+
+- Optional: load the sample content to start from: `npm run seed -- service-account.json`
+  (placeholder projects, products and testimonials: replace them before launch).
+- Then manage everything in the dashboard: projects, products (images + download file), testimonials,
+  reviews, orders, messages, subscribers.
+
+## Optional extras
+
+**Download emails** (customers receive links by email): create a Resend account, verify your domain,
+`npx wrangler secret put RESEND_API_KEY -c worker/wrangler.jsonc`, and set `MAIL_FROM` in
+`worker/wrangler.jsonc`.
+
+**Large product files (over 95 MB).** Smaller files upload through the Worker. For bigger bundles,
+uploads go straight to R2 with a presigned URL:
+1. Cloudflare → R2 → Manage API tokens → Create token with **Object Read & Write** on `abel-create-files`.
+2. Add the values as secrets: `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`.
+3. Allow the browser to upload: edit the origins in `worker/r2-cors.json`, then
+   `npx wrangler r2 bucket cors set abel-create-files --file worker/r2-cors.json`.
+
+**Paystack webhook:** Paystack dashboard → Settings → API Keys & Webhooks →
+`https://abel-create-api.yourname.workers.dev/api/paystack/webhook`.
+
+---
+
+## Develop locally
 
 ```bash
 npm install
-npm run dev        # builds, watches HTML + CSS, runs wrangler dev on :8787
+cp worker/.dev.vars.example worker/.dev.vars   # fill in
+npm run dev        # site on http://localhost:8788, API on http://localhost:8787
 ```
 
-Edit pages in `src/pages`, never in `public/*.html` (those are generated).
+On localhost the site automatically calls the local API.
 
-## Pages
+**Fully offline testing with Firebase emulators** (doesn't touch live data):
 
-Home · Work (filters) · Case study · Shop (filters, sort, search) · Product (licence
-choice, gallery, related, bundle offer) · Cart/checkout · Thank-you/downloads ·
-My account (passwordless email link or Google) · About · Services · Contact ·
-Privacy · Terms · Licence · Refunds · 404.
+```bash
+firebase emulators:start --only auth,firestore
+```
 
-## Before launch
-
-1. **Your details** in `public/assets/js/config.js`: full name (`owner`), email, phone,
-   WhatsApp, socials, domain. Also `SITE_URL` in `wrangler.jsonc`, and the domain in
-   `public/robots.txt` and `public/sitemap.xml`. Then `npm run build`.
-2. **Firebase project.** The config you provided points to the project
-   `safetrace-247bd`. If that belongs to another app, create a new Firebase project
-   for this site and paste its config into `config.js` and `FIREBASE_PROJECT_ID` in
-   `wrangler.jsonc`.
-   - Enable **Firestore** and deploy the rules: `npx firebase-tools deploy --only firestore`
-   - Enable **Authentication → Email link (passwordless)** and **Google**; add your
-     domain under *Authorized domains*.
-3. **Real content.** Replace the sample projects, products and testimonials in
-   `seed.js` (they are placeholders, including the client names, results and
-   quotes), put real images in `public/assets/img/work` and `/products`, then seed:
-   ```bash
-   node scripts/seed-firestore.mjs path/to/service-account.json
-   ```
-   After that, edit content directly in the Firestore console (set `published: true`).
-4. **CV:** add `public/assets/files/abel-create-cv.pdf`. On the About page, fill in the
-   education entry and check the experience entries.
-5. **Prices** on the Services page are suggestions; edit `src/pages/services.html`.
-6. **Cloudflare:**
-   ```bash
-   npx wrangler login
-   npx wrangler r2 bucket create abel-create-files
-   npx wrangler r2 object put abel-create-files/church-flyer-pack.zip --file=./files/church-flyer-pack.zip --remote
-   npx wrangler secret put PAYSTACK_SECRET_KEY
-   npx wrangler secret put FIREBASE_SERVICE_ACCOUNT   # paste the JSON on one line
-   npx wrangler secret put DOWNLOAD_SIGNING_KEY       # any long random string
-   npx wrangler secret put RESEND_API_KEY             # optional: emails download links
-   npm run deploy
-   ```
-   Each product's file lives in R2 as `<slug>.zip` (or set `key` in `productFiles/<slug>`).
-7. **Paystack dashboard → Settings → API Keys & Webhooks:** webhook URL
-   `https://YOUR-DOMAIN/api/paystack/webhook`. Test with `sk_test_…`, then switch to live.
-8. Make a real test purchase on phone and laptop, then submit the sitemap in Google
-   Search Console.
+In `worker/.dev.vars` set `FIRESTORE_EMULATOR_HOST=127.0.0.1:8080` and
+`FIREBASE_AUTH_EMULATOR_HOST=127.0.0.1:9099`. In the browser console on localhost run
+`localStorage.setItem('ac:emulators','1')` and reload. Seed and create an admin against the emulators
+by prefixing the commands with the same two variables. Never set these variables on the deployed Worker.
 
 ## How a purchase works
 
-1. Cart sends product slugs + licence to `POST /api/checkout`. The Worker reads prices
-   from Firestore (never trusts the browser), creates `orders/{reference}` and starts a
-   Paystack transaction.
-2. Paystack popup (or redirect) takes MoMo/card payment.
-3. `/success` calls `GET /api/order`, which verifies with Paystack, checks the amount
-   and currency, marks the order paid once, and returns download links. The webhook
-   does the same in the background, so payment is recorded even if the tab closes.
-4. Links are HMAC-signed and expire after `DOWNLOAD_HOURS`. Customers sign in at
-   `/account` with the same email to get fresh links.
+1. The cart sends product slugs + licence to `POST /api/checkout`. The Worker reads prices from
+   Firestore (never trusts the browser), creates `orders/{reference}` and starts a Paystack payment.
+2. The Paystack popup takes MoMo/card payment, then `/success` calls `GET /api/order`, which verifies
+   with Paystack, checks the amount and currency, and marks the order paid exactly once. The webhook
+   does the same in the background.
+3. Download links are HMAC-signed, expire after `DOWNLOAD_HOURS`, and stream from the private R2
+   bucket. Customers can get fresh links at `/account`; you can too, from Orders in the dashboard.

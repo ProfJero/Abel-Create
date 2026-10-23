@@ -2,6 +2,12 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // Admins are listed in admins/{uid}. Only the make-admin script (service
+    // account) can add or remove them; no client can write this collection.
+    function isAdmin() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
     function isEmail(v) {
       return v is string && v.size() <= 200 && v.matches('^[^@ ]+@[^@ ]+[.][^@ ]+$');
     }
@@ -9,14 +15,18 @@ service cloud.firestore {
       return v is string && v.size() >= min && v.size() <= max;
     }
 
-    // Public catalogue: anyone can read published items. Edit in the
-    // Firebase console or with `npm run seed`.
-    match /{col}/{id} {
-      allow read: if col in ['products', 'projects', 'testimonials', 'reviews']
-                  && resource.data.published == true;
+    match /admins/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
     }
 
-    // Contact form: create only, nobody can read through the client.
+    // Catalogue: the public reads published items, admins manage everything.
+    match /{col}/{id} {
+      allow read: if col in ['products', 'projects', 'testimonials', 'reviews']
+                  && (resource.data.published == true || isAdmin());
+      allow write: if col in ['products', 'projects', 'testimonials', 'reviews'] && isAdmin();
+    }
+
+    // Contact form: anyone can send; only admins can read, mark or delete.
     match /messages/{id} {
       allow create: if request.resource.data.keys().hasOnly(['name', 'email', 'service', 'budget', 'message', 'createdAt'])
         && str(request.resource.data.name, 1, 120)
@@ -25,17 +35,27 @@ service cloud.firestore {
         && str(request.resource.data.budget, 0, 80)
         && str(request.resource.data.message, 10, 5000)
         && request.resource.data.createdAt == request.time;
+      allow read, delete: if isAdmin();
+      allow update: if isAdmin() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']);
     }
 
-    // Newsletter: create only.
+    // Newsletter: anyone can join; only admins can read or remove.
     match /subscribers/{id} {
       allow create: if request.resource.data.keys().hasOnly(['email', 'source', 'createdAt'])
         && isEmail(request.resource.data.email)
         && str(request.resource.data.source, 0, 100)
         && request.resource.data.createdAt == request.time;
+      allow read, delete: if isAdmin();
     }
 
-    // orders and productFiles are only touched by the Cloudflare Worker
-    // (service account bypasses rules). Everything else is denied.
+    // Orders are written only by the Worker; admins can read them.
+    match /orders/{id} {
+      allow read: if isAdmin();
+    }
+
+    // Which R2 file each product delivers. Written by the Worker after upload.
+    match /productFiles/{slug} {
+      allow read: if isAdmin();
+    }
   }
 }

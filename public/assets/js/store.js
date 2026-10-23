@@ -11,7 +11,9 @@ async function load(name, seed, sortField) {
   const key = `ac:${name}`;
   try {
     const cached = JSON.parse(sessionStorage.getItem(key) || 'null');
-    if (cached && Date.now() - cached.at < TTL) return cached.data;
+    // ac:content-version is bumped by the admin dashboard after each edit
+    const version = Number(localStorage.getItem('ac:content-version') || 0);
+    if (cached && Date.now() - cached.at < TTL && cached.at > version) return cached.data;
   } catch {}
 
   pending[name] ??= (async () => {
@@ -34,18 +36,24 @@ async function load(name, seed, sortField) {
   return pending[name];
 }
 
-const withProductDefaults = (p) => ({
-  ...p,
-  images: p.images?.length ? p.images : [1, 2, 3].map((i) => `/assets/img/products/${p.slug}-${i}.svg`),
-  free: !p.price
-});
+// Sample items (no image fields at all) use the generated placeholder art;
+// items created in the dashboard use exactly the images uploaded there.
+const PLACEHOLDER = '/assets/img/og-image.jpg';
 
-const withProjectDefaults = (p) => ({
-  ...p,
-  cover: p.cover || `/assets/img/work/${p.slug}-cover.svg`,
-  images: p.images?.length ? p.images : [1, 2].map((i) => `/assets/img/work/${p.slug}-${i}.svg`),
-  sketch: p.sketch ?? `/assets/img/work/${p.slug}-sketch.svg`
-});
+const withProductDefaults = (p) => {
+  const images = p.images === undefined ? [1, 2, 3].map((i) => `/assets/img/products/${p.slug}-${i}.svg`) : (p.images || []).filter(Boolean);
+  return { ...p, images: images.length ? images : [PLACEHOLDER], free: !p.price };
+};
+
+const withProjectDefaults = (p) => {
+  const sample = p.cover === undefined;
+  return {
+    ...p,
+    cover: p.cover || (sample ? `/assets/img/work/${p.slug}-cover.svg` : PLACEHOLDER),
+    images: sample ? [1, 2].map((i) => `/assets/img/work/${p.slug}-${i}.svg`) : (p.images || []).filter(Boolean),
+    sketch: sample ? `/assets/img/work/${p.slug}-sketch.svg` : p.sketch || ''
+  };
+};
 
 export const getProducts = async () => (await load('products', seedProducts)).map(withProductDefaults);
 export const getProduct = async (slug) => (await getProducts()).find((p) => p.slug === slug);

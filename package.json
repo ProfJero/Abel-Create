@@ -8,13 +8,19 @@
     "build": "npm run build:html && npm run build:css",
     "dev:html": "node scripts/build-html.mjs --watch",
     "dev:css": "tailwindcss -i src/styles/app.css -o public/assets/css/app.css --watch",
-    "dev": "npm run build && concurrently -k -n html,css,worker \"npm:dev:html\" \"npm:dev:css\" \"wrangler dev\"",
+    "dev:site": "wrangler pages dev public --port 8788",
+    "dev:api": "wrangler dev -c worker/wrangler.jsonc --port 8787",
+    "dev": "npm run build && concurrently -k -n html,css,site,api \"npm:dev:html\" \"npm:dev:css\" \"npm:dev:site\" \"npm:dev:api\"",
+    "deploy:site": "npm run build && wrangler pages deploy public --project-name abel-create",
+    "deploy:api": "wrangler deploy -c worker/wrangler.jsonc",
+    "deploy": "npm run deploy:api && npm run deploy:site",
     "placeholders": "node scripts/generate-placeholders.mjs",
     "seed": "node scripts/seed-firestore.mjs",
-    "deploy": "npm run build && wrangler deploy"
+    "make-admin": "node scripts/make-admin.mjs"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",
+    "aws4fetch": "^1.0.20",
     "concurrently": "^9.2.0",
     "tailwindcss": "^4.3.3",
     "wrangler": "^4.151.3"

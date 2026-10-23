@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Dashboard | Abel Create</title>
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Inter:wght@400..700&display=swap">
+  <link rel="stylesheet" href="/assets/css/app.css">
+</head>
+<body class="min-h-dvh bg-paper">
+  <!-- Boot / loading -->
+  <div data-screen="boot" class="grid min-h-dvh place-items-center">
+    <div class="size-10 animate-spin rounded-full border-4 border-line border-t-accent" aria-label="Loading"></div>
+  </div>
+
+  <!-- Sign in -->
+  <div data-screen="login" hidden class="grid min-h-dvh lg:grid-cols-2">
+    <div class="relative hidden overflow-hidden bg-ink lg:block">
+      <img src="/assets/img/photos/abel-studio-bw-960.webp" alt="" class="absolute inset-0 size-full object-cover opacity-60">
+      <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 to-transparent"></div>
+      <div class="absolute inset-x-0 bottom-0 p-12 text-white">
+        <img src="/assets/img/brand/wordmark-white.png" alt="Abel Create" class="h-10 w-auto">
+        <p class="mt-6 max-w-sm font-display text-3xl font-bold leading-tight">Manage your work, shop and messages in one place.</p>
+      </div>
+    </div>
+    <div class="grid place-items-center px-4 py-12">
+      <div class="w-full max-w-sm">
+        <img src="/assets/img/brand/wordmark-black.png" alt="Abel Create" class="h-9 w-auto lg:hidden">
+        <h1 class="mt-8 font-display text-4xl font-bold tracking-tight lg:mt-0">Dashboard sign in</h1>
+        <p class="mt-2 text-mute">For site admins only.</p>
+        <form data-login class="mt-8 grid gap-4" novalidate>
+          <div class="field"><label for="a-email" class="label">Email</label><input id="a-email" name="email" type="email" autocomplete="username" required class="input"></div>
+          <div class="field">
+            <div class="flex items-center justify-between"><label for="a-pass" class="label">Password</label><button type="button" data-forgot class="text-xs font-medium text-mute hover:text-ink">Forgot password?</button></div>
+            <input id="a-pass" name="password" type="password" autocomplete="current-password" required class="input">
+          </div>
+          <p data-login-error class="hidden rounded-xl bg-accent-50 px-4 py-3 text-sm text-accent-600" role="alert"></p>
+          <button class="btn-dark w-full py-4">Sign in</button>
+        </form>
+        <div class="my-6 flex items-center gap-3 text-xs text-mute"><span class="h-px flex-1 bg-line"></span>or<span class="h-px flex-1 bg-line"></span></div>
+        <button type="button" data-google class="btn-ghost w-full py-4">
+          <svg class="size-5" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.5 12.3c0-.8-.1-1.5-.2-2.3H12v4.3h5.9a5 5 0 0 1-2.2 3.3v2.7h3.6c2.1-1.9 3.2-4.8 3.2-8Z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.3-2.7l-3.6-2.7c-1 .7-2.2 1-3.7 1-2.9 0-5.3-1.9-6.2-4.5H2.1v2.8A11 11 0 0 0 12 23Z"/><path fill="#FBBC05" d="M5.8 14.1a6.6 6.6 0 0 1 0-4.2V7.1H2.1a11 11 0 0 0 0 9.8l3.7-2.8Z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.2-3.2A11 11 0 0 0 2.1 7.1l3.7 2.8C6.7 7.3 9.1 5.4 12 5.4Z"/></svg>
+          Continue with Google
+        </button>
+        <a href="/" class="mt-8 inline-block text-sm text-mute hover:text-ink">← Back to the website</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Signed in but not an admin -->
+  <div data-screen="denied" hidden class="grid min-h-dvh place-items-center px-4">
+    <div class="w-full max-w-md rounded-[1.5rem] border border-line bg-white p-8 text-center">
+      <div class="mx-auto grid size-14 place-items-center rounded-full bg-accent-50 text-2xl text-accent">🔒</div>
+      <h1 class="mt-5 font-display text-2xl font-bold">This account isn’t an admin</h1>
+      <p class="mt-2 text-sm text-mute">Signed in as <strong data-denied-email class="text-ink"></strong>. Ask the site owner to run <code class="rounded bg-paper px-1.5 py-0.5 text-xs">npm run make-admin</code> for this email, or add this user ID to the <code class="rounded bg-paper px-1.5 py-0.5 text-xs">admins</code> collection:</p>
+      <button type="button" data-copy-uid class="mt-4 w-full truncate rounded-xl border border-line bg-paper px-4 py-3 font-mono text-xs hover:border-ink/30" title="Copy"></button>
+      <button type="button" data-signout class="btn-dark mt-6 w-full">Sign out</button>
+    </div>
+  </div>
+
+  <!-- App -->
+  <div data-screen="app" hidden class="min-h-dvh lg:grid lg:grid-cols-[260px_1fr]">
+    <!-- Sidebar -->
+    <aside data-sidebar class="fixed inset-y-0 left-0 z-50 flex w-[272px] -translate-x-full flex-col border-r border-line bg-white transition-transform duration-300 ease-out-expo data-[open]:translate-x-0 lg:sticky lg:top-0 lg:z-auto lg:h-dvh lg:w-auto lg:translate-x-0">
+      <div class="flex h-16 items-center justify-between px-5">
+        <a href="#/" class="flex items-center gap-2"><img src="/assets/img/brand/wordmark-black.png" alt="Abel Create" class="h-8 w-auto"><span class="rounded-full bg-paper px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-mute">Admin</span></a>
+        <button type="button" data-nav-close class="grid size-10 place-items-center rounded-full hover:bg-paper lg:hidden" aria-label="Close menu">✕</button>
+      </div>
+      <nav data-nav class="flex-1 overflow-y-auto px-3 py-2 text-sm font-medium" aria-label="Dashboard"></nav>
+      <div class="border-t border-line p-3">
+        <a href="/" target="_blank" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-mute hover:bg-paper hover:text-ink">↗ View website</a>
+        <div class="mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5">
+          <span data-avatar class="grid size-8 shrink-0 place-items-center rounded-full bg-ink text-xs font-bold text-white"></span>
+          <span data-user-email class="min-w-0 flex-1 truncate text-xs text-mute"></span>
+          <button type="button" data-signout class="text-xs font-semibold text-mute hover:text-accent">Sign out</button>
+        </div>
+      </div>
+    </aside>
+    <div data-backdrop hidden class="fixed inset-0 z-40 bg-ink/40 backdrop-blur-sm lg:hidden"></div>
+
+    <!-- Main -->
+    <div class="min-w-0">
+      <header class="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-line bg-paper/85 px-4 backdrop-blur-xl sm:px-6 lg:hidden">
+        <button type="button" data-nav-open class="grid size-10 place-items-center rounded-full hover:bg-white" aria-label="Open menu">
+          <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 8h16M4 16h10"/></svg>
+        </button>
+        <p data-mobile-title class="font-display text-lg font-bold"></p>
+      </header>
+      <main data-view class="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10"></main>
+    </div>
+  </div>
+
+  <div data-modal-root></div>
+  <div data-toasts aria-live="polite" class="pointer-events-none fixed inset-x-0 bottom-4 z-[90] flex flex-col items-center gap-2 px-4"></div>
+  <script type="module" src="/assets/js/admin/app.js"></script>
+</body>
+</html>

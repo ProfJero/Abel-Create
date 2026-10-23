@@ -5,16 +5,19 @@ const b64url = (buf) =>
   btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 const b64urlStr = (s) => b64url(new TextEncoder().encode(s));
 
-let cached = { token: null, exp: 0 };
+const cache = new Map(); // scope -> { token, exp }
 
-async function accessToken(env) {
-  if (cached.token && Date.now() < cached.exp - 60_000) return cached.token;
+// Scope defaults to Firestore; scripts can pass GOOGLE_SCOPE (e.g. cloud-platform)
+export async function accessToken(env) {
+  const scope = env.GOOGLE_SCOPE || 'https://www.googleapis.com/auth/datastore';
+  const cached = cache.get(scope);
+  if (cached && Date.now() < cached.exp - 60_000) return cached.token;
   const sa = JSON.parse(env.FIREBASE_SERVICE_ACCOUNT);
   const now = Math.floor(Date.now() / 1000);
   const header = b64urlStr(JSON.stringify({ alg: 'RS256', typ: 'JWT' }));
   const claims = b64urlStr(JSON.stringify({
     iss: sa.client_email,
-    scope: 'https://www.googleapis.com/auth/datastore',
+    scope,
     aud: 'https://oauth2.googleapis.com/token',
     iat: now,
     exp: now + 3600
@@ -30,7 +33,7 @@ async function accessToken(env) {
   });
   if (!res.ok) throw new Error(`Google auth failed: ${res.status} ${await res.text()}`);
   const { access_token, expires_in } = await res.json();
-  cached = { token: access_token, exp: Date.now() + expires_in * 1000 };
+  cache.set(scope, { token: access_token, exp: Date.now() + expires_in * 1000 });
   return access_token;
 }
 
@@ -64,10 +67,12 @@ const fromFields = (f) => Object.fromEntries(Object.entries(f).map(([k, v]) => [
 const fromDoc = (d) => ({ id: d.name.split('/').pop(), _updateTime: d.updateTime, ...fromFields(d.fields || {}) });
 
 export function firestore(env) {
-  const base = `https://firestore.googleapis.com/v1/projects/${env.FIREBASE_PROJECT_ID}/databases/(default)/documents`;
+  // FIRESTORE_EMULATOR_HOST (local testing only) points at the Firebase emulator
+  const emu = env.FIRESTORE_EMULATOR_HOST;
+  const base = `${emu ? `http://${emu}` : 'https://firestore.googleapis.com'}/v1/projects/${env.FIREBASE_PROJECT_ID}/databases/(default)/documents`;
   const call = async (url, init = {}) => {
-    const res = await fetch(url, { ...init, headers: { authorization: `Bearer ${await accessToken(env)}`, 'content-type': 'application/json' } });
-    return res;
+    const token = emu ? 'owner' : await accessToken(env);
+    return fetch(url, { ...init, headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json' } });
   };
 
   return {
@@ -93,6 +98,11 @@ export function firestore(env) {
       }
       if (!res.ok) throw new Error(`Firestore set ${path}: ${res.status} ${await res.text()}`);
       return true;
+    },
+
+    async remove(path) {
+      const res = await call(`${base}/${path}`, { method: 'DELETE' });
+      if (!res.ok && res.status !== 404) throw new Error(`Firestore delete ${path}: ${res.status}`);
     },
 
     async add(collection, data) {
