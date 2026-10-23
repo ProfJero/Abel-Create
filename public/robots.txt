@@ -2,5 +2,5 @@ User-agent: *
 Disallow: /cart
 Disallow: /success
 Disallow: /account
-Disallow: /api/
+Disallow: /admin
 Sitemap: https://abelcreate.com/sitemap.xml

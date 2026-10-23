@@ -50,7 +50,7 @@ function render() {
         <img data-main src="${esc(p.images[0])}" alt="${esc(p.title)} ${labels[0].toLowerCase()}" width="1200" height="900" class="aspect-[4/3] w-full object-cover transition-opacity duration-300">
         ${p.badge ? `<span class="absolute top-4 left-4 rounded-full ${p.free ? 'bg-ink' : 'bg-accent'} px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">${esc(p.badge)}</span>` : ''}
       </div>
-      <div class="mt-3 grid grid-cols-3 gap-3" role="tablist" aria-label="Product images">
+      <div class="mt-3 grid grid-cols-3 gap-3 ${p.images.length < 2 ? 'hidden' : ''}" role="tablist" aria-label="Product images">
         ${p.images.map((src, n) => `<button type="button" role="tab" data-thumb="${n}" aria-selected="${n === 0}" class="group text-left">
           <img src="${esc(src)}" alt="" loading="lazy" class="aspect-[4/3] w-full rounded-xl object-cover ring-2 ring-transparent ring-offset-2 ring-offset-paper transition group-aria-selected:ring-ink">
           <span class="mt-1.5 block text-xs text-mute group-aria-selected:text-ink">${labels[n] || `Image ${n + 1}`}</span></button>`).join('')}

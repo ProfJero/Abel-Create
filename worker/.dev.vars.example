@@ -1,5 +1,10 @@
-# Copy to .dev.vars for `wrangler dev`. Never commit .dev.vars.
+# Copy to worker/.dev.vars for local `npm run dev`. Never commit .dev.vars.
+SITE_URL=http://localhost:8788
+ALLOWED_ORIGINS=http://localhost:8788,http://127.0.0.1:8788
 PAYSTACK_SECRET_KEY=sk_test_xxx
 FIREBASE_SERVICE_ACCOUNT={"type":"service_account","project_id":"...","private_key":"-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n","client_email":"..."}
 DOWNLOAD_SIGNING_KEY=change-me-to-a-long-random-string
 RESEND_API_KEY=
+R2_ACCOUNT_ID=
+R2_ACCESS_KEY_ID=
+R2_SECRET_ACCESS_KEY=

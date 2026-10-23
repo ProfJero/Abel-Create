@@ -36,9 +36,11 @@ export const SHOP = {
 // Payments: the Paystack secret key lives only in the Cloudflare Worker
 // (`wrangler secret put PAYSTACK_SECRET_KEY`). The browser never needs a key.
 
-// Cloudflare Worker API. Same origin when the site and API are deployed
-// together (wrangler.jsonc), so this stays empty.
-export const API_BASE = '';
+// The API Worker (worker/). Paste its URL here after `npm run deploy:api`.
+// Local development (npm run dev) automatically uses the local Worker.
+const API_URL = 'https://abel-create-api.YOUR-SUBDOMAIN.workers.dev';
+const isLocal = typeof location !== 'undefined' && /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+export const API_BASE = isLocal ? `http://${location.hostname}:8787` : API_URL;
 
 export const FIREBASE = {
   apiKey: 'AIzaSyC_NAI-INDrZvSM1Ke4x_qnoai0PksdZus',

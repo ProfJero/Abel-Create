@@ -1,4 +1,7 @@
 node_modules/
 .wrangler/
+**/.wrangler/
 .dev.vars
+**/.dev.vars
 service-account*.json
+*-debug.log

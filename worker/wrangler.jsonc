@@ -1,0 +1,37 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  // API Worker, deployed separately from the Pages site:
+  //   npm run deploy:api      → https://abel-create-api.<your-subdomain>.workers.dev
+  "name": "abel-create-api",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-01",
+  "observability": { "enabled": true },
+
+  "r2_buckets": [
+    // Private: paid PSD/AI/ZIP files, only served through signed links
+    { "binding": "FILES", "bucket_name": "abel-create-files" },
+    // Public through /media/*: images uploaded from the admin dashboard
+    { "binding": "MEDIA", "bucket_name": "abel-create-media" }
+  ],
+
+  "vars": {
+    // Your Pages site. Used for Paystack's return URL and links in emails.
+    "SITE_URL": "https://abel-create.pages.dev",
+    // Sites allowed to call this API (comma-separated, "*" = one subdomain level).
+    // Keep the preview pattern so Pages preview deployments work too.
+    "ALLOWED_ORIGINS": "https://abel-create.pages.dev,https://*.abel-create.pages.dev",
+    "FIREBASE_PROJECT_ID": "safetrace-247bd",
+    "DOWNLOAD_HOURS": "48",
+    "MAIL_FROM": "Abel Create <downloads@abelcreate.com>",
+    // For large product uploads (presigned URLs straight to R2)
+    "R2_FILES_BUCKET": "abel-create-files"
+  }
+
+  // Secrets: `npx wrangler secret put NAME -c worker/wrangler.jsonc`
+  //   PAYSTACK_SECRET_KEY        sk_test_… / sk_live_…
+  //   FIREBASE_SERVICE_ACCOUNT   service-account JSON on one line
+  //   DOWNLOAD_SIGNING_KEY       any long random string
+  //   RESEND_API_KEY             optional: email download links
+  //   R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY
+  //                              optional: uploads over 95 MB from the dashboard
+}
