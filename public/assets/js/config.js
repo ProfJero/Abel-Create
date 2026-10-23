@@ -43,11 +43,11 @@ const isLocal = typeof location !== 'undefined' && /^(localhost|127\.0\.0\.1)$/.
 export const API_BASE = isLocal ? `http://${location.hostname}:8787` : API_URL;
 
 export const FIREBASE = {
-  apiKey: 'AIzaSyC_NAI-INDrZvSM1Ke4x_qnoai0PksdZus',
-  authDomain: 'safetrace-247bd.firebaseapp.com',
-  projectId: 'safetrace-247bd',
-  storageBucket: 'safetrace-247bd.firebasestorage.app',
-  messagingSenderId: '87303850861',
-  appId: '1:87303850861:web:0f7b648b3bd584c211a864',
-  measurementId: 'G-2W2LD3J17T'
+  apiKey: "AIzaSyD7uTz_yRR8HS3q1v7z7A7nGy7O2doZBOU",
+  authDomain: "abel-81eab.firebaseapp.com",
+  projectId: "abel-81eab",
+  storageBucket: "abel-81eab.firebasestorage.app",
+  messagingSenderId: "333282401477",
+  appId: "1:333282401477:web:c0073cfafb03b7f74a24ac",
+  measurementId: "G-5Y3T3SZ9QW"
 };
